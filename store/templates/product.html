@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block main_content %}
+{% load static %}
+{% load humanize %}
+<div class="card">
+    <div class="card-body row">
+        <div class="col-xl-4 col-lg-5 col-md-6">
+            <img class="card mb-0" style="width: 100%;" src="{{product.image.url}}" alt="">
+        </div>
+        <div class="col-xl-8 col-lg-7 col-md-6 pl-3 pr-3">
+            <p style="font-size:x-large;">{{product.name}}</p>
+            <div class="row" style="font-size:large;">
+                <div class="col-xl-6">
+                    <p><i class="fas fa-check" style="color: green;"></i> Bảo hành chính hãng 12 tháng</p>
+                    <p><i class="fas fa-check" style="color: green;"></i> Hỗ trợ đổi mới trong 7 ngày</p>
+                    <p><i class="fas fa-check" style="color: green;"></i> Windows bản quyền tích hợp</p>
+                </div>
+                <div class="col-xl-6">
+                    <b style="color: red;font-size: larger;text-decoration:underline;">Khuyến mãi:</b>
+                    <p><i class="fas fa-gift" style="color: gold;"></i> Balo Acer Predator SUV</p>
+                    <p><i class="fas fa-gift" style="color: gold;"></i> Túi chống sốc 15"</p>
+                </div>
+            </div>
+            <div style="font-size: large;">
+                <span>Giá cũ: <span class="product_oldprice">{{price|intcomma}}<span>₫</span></span></span><br>
+                <span>Giá Mới: <span class="product_newprice"><b>{{newprice|intcomma}}<span>₫</span></b></span></span>
+            </div>
+            <button class="btn btn-outline-danger mt-3" id="btn-add_product" style="font-size: large;" onclick="add_product({{product.id}})"><i
+                    class='fas fa-cart-plus'></i> Thêm
+                vào giỏ</button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-8 col-lg-7">
+        <div class="card">
+            <div class="card-header">
+                <p class="card-title">Chi tiết thông số</p>
+            </div>
+            <div class="card-body py-0">
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">CPU:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.cpu}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">RAM:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.ram}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">DISK:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.disk}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">VGA:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.vga}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">DISPLAY:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.display}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">PORT:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.port}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">AUDIO:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.audio}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">KEYBOARD:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.keyboard}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">LAN:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.lan}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">WIFI:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.wifi}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">WEBCAM:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.webcam}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">BLUETOOTH:</span>
+                    <span
+                        class="col-xl-10 col-lg-9 col-md-10 col-xl-10 col-lg-9 col-md-10 col-9">{{product.bluetooth}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">SD:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.sd}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">CD:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.cd}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">OS:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.os}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">BATTERY:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.battery}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">WEIGHT:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9"><span>{{product.weight}}</span> kg</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">COLOR:</span>
+                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.color}}</span>
+                </div>
+                <div class="row py-2">
+                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">DIMENSION:</span>
+                    <span class="col-md-10 col-xl-10 col-lg-9 col-md-10 col-9">{{product.dimension}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-5">
+        <div class="card">
+            <div class="card-header">
+                <p class="card-title">Giới thiệu sản phẩm</p>
+            </div>
+            <div class="card-body">
+                <p>{{product.description}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% csrf_token %}
+<script>
+    function add_product(id) {
+        $.ajax({
+            url: "{% url 'store:add_product' %}",
+            type: 'post',
+            data: {
+                'id_product': id
+            },
+            success: function (data) {
+                let x = JSON.parse(data)
+                if (x.max == true) {
+                    document.getElementById("cart_number").innerHTML = x.cart_number
+                    document.getElementById("btn-add_product").disabled = true
+                    alert('Bạn đã đạt tối đa số lượng sản phẩm cho 1 đơn hàng')
+                }
+                else
+                    document.getElementById("cart_number").innerHTML = x.cart_number
+            }
+        })
+    };
+</script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block main_content %}
+{% load static %}
+{% load humanize %}
+<div class="card">
+    <div class="card-header row">
+        <div class="col-xl-5 col-lg-6 col-md-7 col-sm-9">
+            <div class="row">
+                <div class="col-sm-8 col-7">
+                    <select class="form-control" name="price_range" onchange="order_by()" id="price_range">
+                        <option value="0">0 - ∞</option>
+                        <option value="1">0 - 15,000,000</option>
+                        <option value="2">15,000,000 - 30,000,000</option>
+                        <option value="3">30,000,000 - 50,000,000</option>
+                        <option value="4">50,000,000 - 80,000,000</option>
+                        <option value="5">80,000,000 - 100,000,000</option>
+                        <option value="6">100,000,000 - ∞</option>
+                    </select>
+                </div>
+                <div class="col-sm-4 col-5">
+                    <select class="form-control" name="order_by" onchange="order_by()" id="order_by">
+                        <option value="0">Tăng dần</option>
+                        <option value="1">Giảm dần</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-2 row card-body" id="card_view">
+        {% if list_product|length != 0 %}
+        {% for item in list_product %}
+        <div class="col-lg-3 col-md-4 col-6">
+            {% include 'subview/cardview_product.html' %}
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="card-body">
+            <h1>Không có sản phẩm liên quan đến từ khóa.</h1>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<script>
+    function order_by() {
+        $.ajax({
+            url: "{% url 'store:order_by' %}",
+            type: 'post',
+            data: {
+                'key': document.getElementById("order_by").value,
+                'data': '{{data}}',
+                'view_name': '{{name_view}}',
+                'price_range': document.getElementById("price_range").value
+            },
+            success: function (data) {
+                let x = JSON.parse(data)
+                if (x.length != 0) {
+                    console.log(data)
+                    let html = x.map(card_row).join('')
+                    document.getElementById("card_view").innerHTML = html
+                } else {
+                    document.getElementById("card_view").innerHTML = '<p class="my-3" style="margin:auto">Không tìm thấy sản phẩm.</p>'
+                }
+            }
+        })
+    }
+    function card_row(obj) {
+        return (`
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="card p-2">
+                        <a href="products/${obj.id}">
+                            <div style="max-height: 250px; overflow: hidden;">
+                                <img class="cv_img" src="${obj.image}" alt="">
+                            </div>
+                            <span class="cv_title">${obj.name}</span>
+                        </a>
+                        <span class="cv_oldprice">${obj.price}₫</span>
+                        <span class="cv_newprice"><b>${obj.newprice}₫</b></span>
+                        {% if item.sale != 0 %}
+                        <div class="sale" style="background-image: url({% static 'sale.png' %});">
+                            <center><span>-${obj.sale}%</span></center>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            `)
+    }
+</script>
+{% endblock %}

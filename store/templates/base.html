@@ -1,0 +1,106 @@
+<html lang="en" style="height: auto;">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Store</title>
+  {% load static %}
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+
+  <link rel="shortcut icon" href="{% static '96868262_p0.ico' %}" type="image/x-icon">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  {% include 'subview/style.html' %}
+
+</head>
+
+<body class="layout-top-nav" style="height: auto;">
+  <div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+      <div class="container">
+        <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        {% block nav_bar %}
+        <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+          <!-- Left navbar links -->
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a href="{% url 'store:home' %}" class="nav-link {% if page == 1 %}active{% endif %}"><i
+                  class="fas fa-home return"></i> HOME</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                class="nav-link dropdown-toggle"><i class="fas fa-list"></i> DANH MỤC SẢN PHẨM </a>
+              <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                {% for item in list_brand %}
+                <li><a href="{% url 'store:brand_filter' item.id %}"
+                    class="dropdown-item {% if brand == item.id %}active{% endif %}">{{item.name}}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+          </ul>
+
+          <!-- SEARCH FORM -->
+          {% include 'subview/search.html' %}
+
+        </div>
+        <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+          <li class="nav-item {% if page == 3 %}active{% endif %}">
+            <a class="nav-link" href="{% url 'store:cart' %}">
+              <i class='fas fa-shopping-cart' style="font-size: 20px;"><small style="color: red"><b
+                    id="cart_number">{{cart_number}}</b></small></i>
+            </a>
+          </li>
+        </ul>
+        {% endblock nav_bar %}
+      </div>
+    </nav>
+    <div class="content-wrapper">
+
+      <!-- Main content -->
+      <div class="content py-3"
+        style="background-size: cover;background-image: url({% static 'background.jpg' %});background-attachment: fixed;">
+        <div class="container">
+          {% block main_content %}{% endblock main_content %}
+
+        </div>
+      </div>
+      <footer class="bg-light text-center text-lg-start">
+        <div class="container p-2">
+          <p class="footer_content"><b>ĐỒ ÁN CHUYÊN ĐỀ TỐT NGHIỆP</b></p>
+          <p class="footer_content">Đề tài: Xây dựng phần mềm quản lý bán hàng tại cửa hàng bán laptop</p>
+          <p class="footer_content">Nền tản: Python web</p>
+        </div>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+          <b>Developer: Trần Thiên Trường Duy - MSSV: 3001181616</b>
+        </div>
+      </footer>
+    </div>
+
+  </div>
+
+
+  <!-- REQUIRED SCRIPTS -->
+
+  <!-- jQuery -->
+  <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- AdminLTE App -->
+  <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+  <a href='#' title="Back to top" class="back_to_top">
+    <center><i class='fas fa-angle-double-up' style="font-size: 30px;"></i></center>
+  </a>
+</body>
+
+</html>

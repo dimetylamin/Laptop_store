@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% block nav_bar %}
+{% with page=3 %}{{block.super}}{% endwith %}
+{% endblock %}
+{% block main_content %}
+{% load static %}
+{% load humanize %}
+<div class="card">
+    <div class="card-header">
+        <p class="card-title">Giỏ hàng của bạn</p>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row" id="view_product_card">
+                    {% for item in list_product_cart %}
+                    <div class="col-lg-4 col-6" id="card_id_{{item.id}}">
+                        <div class="card p-2">
+                            <button type="button" onclick="del_product({{item.id}})" class="card del_cv_cart">
+                                <i class="fas fa-trash-alt" style="color: red; font-size: 17px; margin: auto;"></i>
+                            </button>
+                            <a href="{% url 'store:product' item.id %}">
+                                <img style="width: 100%; height: 100%;" src="{{item.image.url}}">
+                                <span class="cv_title">{{item.name}}</span>
+                            </a>
+                            <div class="row pr-2" style="margin-top: 5px;">
+                                <b class="col-xl-8 col-lg-9 col-8"
+                                    style="color: red; font-size: larger;margin-top: 5px;"><span
+                                        id="price_{{item.id}}">{{item.price|intcomma}}</span>₫</b>
+                                <input class="col-xl-4 col-lg-3 col-4" id="quantity_{{item.id}}" type="number" min="1"
+                                    max="10" value="{{item.quantity}}"
+                                    onchange="changequantity_product({{item.id}})">
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <h4>Tổng tiền: <b style="color: red;"><span id="sum_price">{{total_price|intcomma}}</span>₫</b></h4>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body pb-0">
+                        <form action="{% url 'store:bill' %}" method="post">
+                            {% csrf_token %}
+                            <p>Thông tin khách hàng</p>
+                            <p><input class="form-control" name="name" type="text" placeholder="Họ và tên khách hàng">
+                            </p>
+                            <p><input class="form-control" name="phone" type="tel" maxlength="10"
+                                    placeholder="Số điện thoại"></p>
+                            <p><input class="form-control" name="email" type="email" placeholder="Email"></p>
+                            <p>Địa chỉ giao hàng</p>
+                            <p>
+                                <select name="province_select" id="province_select" onchange="changedicstricts(this)"
+                                    class="form-control">
+                                    <option value="0">---Chọn tỉnh thành---</option>
+                                </select>
+                            </p>
+                            <p>
+                                <select name="dicstricts_select" id="dicstricts_select" onchange="changewards(this)"
+                                    class="form-control">
+                                    <option value="0">---Chọn quận/huyện---</option>
+                                </select>
+                            </p>
+                            <p>
+                                <select name="wards_select" id="wards_select" class="form-control">
+                                    <option value="0">---Chọn phường/xã---</option>
+                                </select>
+                            </p>
+                            <p><input class="form-control" name="address" id="address" type="tel"
+                                    placeholder="Số nhà, tên đường"></p>
+                            <p>Hình thức thanh toán</p>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12 col-6">
+                                    <label class="card" type="button" style="padding: 5px;">
+                                        <center><input type="radio" checked value="0" name="payment_method"></center>
+                                        <center><i class='mr-2 fas fa-money-bill'></i>Tiền mặt</center>
+                                    </label>
+                                </div>
+                                <div class="col-lg-6 col-md-12 col-6">
+                                    <label class="card" type="button" style="padding: 5px;">
+                                        <center><input type="radio" value="1" name="payment_method"></center>
+                                        <center><i class='mr-2 far fa-credit-card'></i>Thẻ ATM</center>
+                                    </label>
+                                </div>
+                                <div class="col-lg-6 col-md-12 col-6">
+                                    <label class="card" type="button" style="padding: 5px;">
+                                        <center><input type="radio" value="2" name="payment_method"></center>
+                                        <center><i class='mr-2 fab fa-cc-visa'></i>Thẻ Visa</center>
+                                    </label>
+                                </div>
+                                <div class="col-lg-6 col-md-12 col-6">
+                                    <label class="card" type="button" style="padding: 5px;">
+                                        <center><input type="radio" value="3" name="payment_method"></center>
+                                        <center><i class='mr-2 fab fa-cc-mastercard'></i>Mastercard</center>
+                                    </label>
+                                </div>
+                            </div>
+                            <button class="btn btn-block btn-success" type="submit">THANH TOÁN</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let url = "https://provinces.open-api.vn/api/"
+
+    async function getprovinces() {
+        let province = [];
+        let resp_provinces = await fetch(url + "p");
+        province = await resp_provinces.json();
+        province = province.map(objects => ({
+            name: objects.name,
+            code: objects.code
+        }));
+
+        let html = province.map(renderAddresrow);
+        document.getElementById("province_select").innerHTML = '<option value="0">---Chọn tỉnh thành---</option>' + html;
+    };
+
+    getprovinces()
+
+    async function changedicstricts(objects) {
+        let dicstrics = [];
+        let resp = await fetch(url + "p/" + objects.value + "?depth=2")
+        dicstrics = await resp.json()
+        dicstrics = dicstrics.districts.map(obj => ({
+            name: obj.name,
+            codename: obj.codename,
+            code: obj.code
+        }))
+        let html = dicstrics.map(renderAddresrow);
+        document.getElementById("dicstricts_select").innerHTML = '<option value="0">---Chọn tỉnh thành---</option>' + html;
+    };
+
+    async function changewards(objects) {
+        let wards = [];
+        let resp = await fetch(url + "d/" + objects.value + "?depth=2")
+        wards = await resp.json()
+        wards = wards.wards.map(obj => ({
+            name: obj.name,
+            codename: obj.codename,
+            code: obj.code
+        }))
+        let html = wards.map(renderAddresrow);
+        document.getElementById("wards_select").innerHTML = '<option value="0">---Chọn tỉnh thành---</option>' + html;
+    };
+
+    function renderAddresrow(row) {
+        return (`<option value="${row.code}">${row.name}</option>`);
+    };
+
+    function del_product(id) {
+        $.ajax({
+            url: "{% url 'store:del_product_cart' %}",
+            type: 'post',
+            data: {
+                'id': id
+            },
+            success: function (data) {
+                let x = JSON.parse(data)
+                $('#card_id_' + id).remove()
+                document.getElementById("sum_price").innerHTML = x.total_price
+                document.getElementById("cart_number").innerHTML = x.cart_number
+            }
+        })
+    }
+
+    function changequantity_product(id) {
+        $.ajax({
+            url: "{% url 'store:changequantity_product' %}",
+            type: 'post',
+            data: {
+                'id': id,
+                'value': document.getElementById("quantity_" + id).value
+            }, success: function (data) {
+                if (data != 0) {
+                    let x = JSON.parse(data)
+                    document.getElementById("cart_number").innerHTML = x.cart_number
+                    document.getElementById("sum_price").innerHTML = x.total_price
+                    document.getElementById("price_" + id).innerHTML = x.price
+                } else {
+                    alert('Số lượng ít nhất là 1 và tối đa 10 sản phẩm')
+                }
+            }
+        })
+    };
+</script>
+{% endblock %}

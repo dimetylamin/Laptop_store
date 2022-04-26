@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block main_content %}
+<div class="error-page" style="color: white;text-shadow: 0 0 5px black;">
+    <h2 class="headline text-warning"> 404</h2>
+
+    <div class="error-content">
+        <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Page not found.</h3>
+        <p style="font-size: larger;">
+        {{error_content}}
+        </p>
+        <p><a href="{% url 'store:home' %}" style="color: gold;"><i class="fas fa-home return"></i> return to Home</a>
+        </p>
+        <p type="button" onclick="history.back()" style="color: gold;"><i class="fas fa-undo-alt"></i> Back to previous
+            page</p>
+        <form class="search-form" method="post" action="{% url 'store:search' %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" class="form-control" name="search_input" placeholder="Search">
+                <div class="input-group-append">
+                    <button type="submit" name="submit" class="btn btn-warning"><i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.input-group -->
+        </form>
+    </div>
+</div>
+{% endblock %}

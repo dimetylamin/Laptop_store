@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block nav_bar %}
+{% with page=1 %}
+{{block.super}}
+{% endwith %}
+{% endblock %}
+
+{% block main_content %}
+<div class="card">
+    <div class="card-header">
+        <p class="card-title" style="font-size:x-large">Laptop ASUS</p>
+    </div>
+    <div class="p-2 row">
+        {% for item in list_asus %}
+        <div class="col-lg-3 col-md-4 col-6">
+            {% include 'subview/cardview_product.html' %}
+        </div>
+        {% endfor %}
+        <a href="{% url 'store:brand_filter' 1 %}" class="btn btn-block btn-outline-success" style="margin-left: 5px; margin-right: 5px;">Xem thêm</a>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <p class="card-title" style="font-size:x-large">Laptop ACER</p>
+    </div>
+    <div class="p-2 row">
+        {% for item in list_acer %}
+        <div class="col-lg-3 col-md-4 col-6">
+            {% include 'subview/cardview_product.html' %}
+        </div>
+        {% endfor %}
+        <a href="{% url 'store:brand_filter' 2 %}" class="btn btn-block btn-outline-success" style="margin-left: 5px; margin-right: 5px;">Xem thêm</a>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <p class="card-title" style="font-size:x-large">Laptop DELL</p>
+    </div>
+    <div class="p-2 row">
+        {% for item in list_dell %}
+        <div class="col-lg-3 col-md-4 col-6">
+            {% include 'subview/cardview_product.html' %}
+        </div>
+        {% endfor %}
+        <a href="{% url 'store:brand_filter' 3 %}" class="btn btn-block btn-outline-success" style="margin-left: 5px; margin-right: 5px;">Xem thêm</a>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <p class="card-title" style="font-size:x-large">Laptop MSI</p>
+    </div>
+    <div class="p-2 row">
+        {% for item in list_msi %}
+        <div class="col-lg-3 col-md-4 col-6">
+            {% include 'subview/cardview_product.html' %}
+        </div>
+        {% endfor %}
+        <a href="{% url 'store:brand_filter' 4 %}" class="btn btn-block btn-outline-success" style="margin-left: 5px; margin-right: 5px;">Xem thêm</a>
+    </div>
+</div>
+{% endblock %}

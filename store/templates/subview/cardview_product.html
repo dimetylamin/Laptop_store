@@ -1,0 +1,15 @@
+{% load static %}
+{% load humanize %}
+<div class="card p-2">
+    <a href="{% url 'store:product' item.id %}">
+        <div style="max-height: 250px; overflow: hidden;">
+            <img class="cv_img" src="{{item.image.url}}" alt="">
+        </div>
+        <span class="cv_title">{{item.name}}</span>
+    </a>
+    <span class="cv_oldprice">{{item.price|intcomma}}₫</span>
+    <span class="cv_newprice"><b>{{item.newprice|intcomma}}₫</b></span>
+    <div class="sale" style="background-image: url({% static 'sale.png' %});">
+        <center><span>-{{item.sale}}%</span></center>
+    </div>
+</div>
