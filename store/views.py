@@ -29,17 +29,17 @@ def index(request):
     list_msi = []
     for item in products().filter(brand=1):
         list_asus.append({'id': item.id, 'name': item.name, 'image': item.image,
-                         'price': item.price, 'newprice': item.newprice,
+                          'price': item.price, 'newprice': item.newprice,
                           'sale': round(100-(item.newprice/item.price*100), 1)})
 
     for item in products().filter(brand=2):
         list_acer.append({'id': item.id, 'name': item.name, 'image': item.image,
-                         'price': item.price, 'newprice': item.newprice,
+                          'price': item.price, 'newprice': item.newprice,
                           'sale': round(100-(item.newprice/item.price*100), 1)})
 
     for item in products().filter(brand=3):
         list_dell.append({'id': item.id, 'name': item.name, 'image': item.image,
-                         'price': item.price, 'newprice': item.newprice,
+                          'price': item.price, 'newprice': item.newprice,
                           'sale': round(100-(item.newprice/item.price*100), 1)})
 
     for item in products().filter(brand=4):
@@ -48,11 +48,8 @@ def index(request):
                          'sale': round(100-(item.newprice/item.price*100), 1)})
 
     context = {
-        'list_brand': brands(),
-        'list_asus': list_asus[:8],
-        'list_acer': list_acer[:8],
-        'list_msi': list_msi[:8],
-        'list_dell': list_dell[:8],
+        'list_brand': brands(), 'list_asus': list_asus[:8], 'list_acer': list_acer[:8],
+        'list_msi': list_msi[:8], 'list_dell': list_dell[:8],
         'cart_number': len(getSession_coverList(request, 'products_cart'))
     }
     return render(request, 'index.html', context)
@@ -69,10 +66,8 @@ def cart(request):
         list_product_cart.append({'id': product.id, 'name': product.name, 'image': product.image,
                                   'price': product.newprice*quantity, 'quantity': quantity})
     context = {
-        'list_brand': brands(),
-        'list_product_cart': list_product_cart,
-        'total_price': total_price,
-        'cart_number': len(list_product_cart_session)
+        'list_brand': brands(), 'list_product_cart': list_product_cart,
+        'total_price': total_price, 'cart_number': len(list_product_cart_session)
     }
     return render(request, 'cart.html', context)
 
@@ -80,10 +75,8 @@ def cart(request):
 def product(request, id_product):
     product = products().get(id=id_product)
     context = {
-        'list_brand': brands(),
-        'product': product,
-        'price': product.price,
-        'newprice': product.newprice,
+        'list_brand': brands(), 'product': product,
+        'price': product.price, 'newprice': product.newprice,
         'cart_number': len(getSession_coverList(request, 'products_cart'))
     }
     return render(request, 'product.html', context)
@@ -97,10 +90,8 @@ def brand_filter(request, id_brand):
                              'price': item.price, 'newprice': item.newprice,
                              'sale': round(100-(item.newprice/item.price*100), 1)})
     context = {
-        'list_brand': brands(),
-        'data': id_brand,
-        'list_product': list_product,
-        'name_view': 'brand_filter',
+        'list_brand': brands(), 'data': id_brand,
+        'list_product': list_product, 'name_view': 'brand_filter',
         'cart_number': len(getSession_coverList(request, 'products_cart'))
     }
     return render(request, 'product_filter.html', context)
@@ -124,13 +115,11 @@ def search(request):
             list = []
             for item in product:
                 list.append({'id': item.id, 'name': item.name, 'image': item.image,
-                            'price': item.price, 'newprice': item.newprice,
+                             'price': item.price, 'newprice': item.newprice,
                              'sale': round(100-(item.newprice/item.price*100), 1)})
             context = {
-                'list_brand': brands(),
-                'list_product': list,
-                'data': search_value,
-                'name_view': 'search',
+                'list_brand': brands(), 'list_product': list,
+                'data': search_value, 'name_view': 'search',
                 'cart_number': len(getSession_coverList(request, 'products_cart'))
             }
             return render(request, 'product_filter.html', context)
@@ -262,17 +251,9 @@ def bill(request):
                     del request.session['products_cart']
                 order = Order.objects.filter(phone=phone).last()
                 context = {
-                    'name': name,
-                    'phone': phone,
-                    'email': email,
-                    'address': address,
-                    'price': total_price,
-                    'payment': payment[payment_id],
-                    'list_cart': list_cart,
-                    'order_status': order_status,
-                    'cart_number': 0,
-                    'order_day': order.created_at,
-                    'list_brand': brands()
+                    'name': name, 'phone': phone, 'email': email, 'address': address, 'price': total_price,
+                    'payment': payment[payment_id], 'list_cart': list_cart, 'order_status': order_status,
+                    'cart_number': 0, 'order_day': order.created_at, 'list_brand': brands()
                 }
                 return render(request, 'bill.html', context)
             else:
@@ -299,25 +280,29 @@ def order_by(request):
     list = []
     if view_name == 'search':
         if key == 0:
-            for item in products().filter(Q(name__icontains=data) | Q(brand__name__icontains=data)).filter(newprice__range=(list_price_range[id_price_range]['start_price'], list_price_range[id_price_range]['end_price'])).order_by('newprice'):
+            for item in products().filter(Q(name__icontains=data) | Q(brand__name__icontains=data)).filter(newprice__range=(list_price_range[id_price_range]['start_price'],
+                                                                                                                            list_price_range[id_price_range]['end_price'])).order_by('newprice'):
                 list.append({'id': item.id, 'name': item.name, 'image': f'/{item.image}',
                              'price': '{:,}'.format(item.price), 'newprice': '{:,}'.format(item.newprice),
                              'sale': round(100-(item.newprice/item.price*100), 1)})
         else:
-            for item in products().filter(Q(name__icontains=data) | Q(brand__name__icontains=data)).filter(newprice__range=(list_price_range[id_price_range]['start_price'], list_price_range[id_price_range]['end_price'])).order_by('-newprice'):
+            for item in products().filter(Q(name__icontains=data) | Q(brand__name__icontains=data)).filter(newprice__range=(list_price_range[id_price_range]['start_price'],
+                                                                                                                            list_price_range[id_price_range]['end_price'])).order_by('-newprice'):
                 list.append({'id': item.id, 'name': item.name, 'image': f'/{item.image}',
                              'price': '{:,}'.format(item.price), 'newprice': '{:,}'.format(item.newprice),
                              'sale': round(100-(item.newprice/item.price*100), 1)})
     if view_name == 'brand_filter':
         if key == 0:
-            for item in products().filter(brand=data).filter(newprice__range=(list_price_range[id_price_range]['start_price'], list_price_range[id_price_range]['end_price'])).order_by('newprice'):
+            for item in products().filter(brand=data).filter(newprice__range=(list_price_range[id_price_range]['start_price'],
+                                                                              list_price_range[id_price_range]['end_price'])).order_by('newprice'):
                 list.append({'id': item.id, 'name': item.name, 'image': f'/{item.image}',
                              'price': '{:,}'.format(item.price), 'newprice': '{:,}'.format(item.newprice),
                              'sale': round(100-(item.newprice/item.price*100), 1)})
         else:
-            for item in products().filter(brand=data).filter(newprice__range=(list_price_range[id_price_range]['start_price'], list_price_range[id_price_range]['end_price'])).order_by('-newprice'):
+            for item in products().filter(brand=data).filter(newprice__range=(list_price_range[id_price_range]['start_price'],
+                                                                              list_price_range[id_price_range]['end_price'])).order_by('-newprice'):
                 list.append({'id': item.id, 'name': item.name, 'image': f'/{item.image}',
                              'price': '{:,}'.format(item.price), 'newprice': '{:,}'.format(item.newprice),
                              'sale': round(100-(item.newprice/item.price*100), 1)})
-    # print(list)
+                             
     return HttpResponse(json.dumps(list))

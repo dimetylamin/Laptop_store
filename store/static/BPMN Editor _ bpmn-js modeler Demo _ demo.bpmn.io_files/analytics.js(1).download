@@ -1,0 +1,1 @@
+function track(t,e,n){"function"==typeof window.ga&&window.ga("send",{hitType:"event",eventCategory:t,eventAction:e,eventLabel:n})}!function(){for(var t=document.querySelectorAll("[data-track]"),e=0;e<t.length;e++)!function(t){var e=t.getAttribute("data-track").split(":");t.addEventListener("click",(function(){track(e[0],e[1],e[2])}),!1)}(t[e])}();
