@@ -25,100 +25,144 @@
                 <span>Giá cũ: <span class="product_oldprice">{{price|intcomma}}<span>₫</span></span></span><br>
                 <span>Giá Mới: <span class="product_newprice"><b>{{newprice|intcomma}}<span>₫</span></b></span></span>
             </div>
-            <button class="btn btn-outline-danger mt-3" id="btn-add_product" style="font-size: large;" onclick="add_product({{product.id}})"><i
-                    class='fas fa-cart-plus'></i> Thêm
+            <button class="btn btn-outline-danger mt-3" id="btn-add_product" style="font-size: large;"
+                onclick="add_product({{product.id}})"><i class='fas fa-cart-plus'></i> Thêm
                 vào giỏ</button>
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="specs_product" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thông số kỹ thuật</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">CPU:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.cpu}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">RAM:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.ram}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">DISK:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.disk}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">VGA:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.vga}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">DISPLAY:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.display}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">PORT:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.port}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">AUDIO:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.audio}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">KEYBOARD:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.keyboard}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">LAN:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.lan}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">WIFI:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.wifi}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">WEBCAM:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.webcam}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">BLUETOOTH:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.bluetooth}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">SD:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.sd}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">CD:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.cd}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">OS:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.os}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">BATTERY:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.battery}}</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">WEIGHT:</span>
+                    <span class="col-lg-9 col-md-9 col-9"><span>{{product.weight}}</span> kg</span>
+                </div>
+                <div class="row spec_line">
+                    <span class="col-lg-3 col-md-3 col-3">COLOR:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.color}}</span>
+                </div>
+                <div class="row py-2">
+                    <span class="col-lg-3 col-md-3 col-3">DIMENSION:</span>
+                    <span class="col-lg-9 col-md-9 col-9">{{product.dimension}}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
-    <div class="col-xl-8 col-lg-7">
+    <div class="col-xl-6 col-lg-7">
         <div class="card">
             <div class="card-header">
-                <p class="card-title">Chi tiết thông số</p>
+                <p class="card-title">Thông số sản phẩm</p>
             </div>
             <div class="card-body py-0">
                 <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">CPU:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.cpu}}</span>
+                    <span class="col-2">CPU</span>
+                    <span class="col-10">{{product.cpu}}</span>
                 </div>
                 <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">RAM:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.ram}}</span>
+                    <span class="col-2">RAM</span>
+                    <span class="col-10">{{product.ram}}</span>
                 </div>
                 <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">DISK:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.disk}}</span>
+                    <span class="col-2">VGA</span>
+                    <span class="col-10">{{product.vga}}</span>
                 </div>
                 <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">VGA:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.vga}}</span>
+                    <span class="col-2">DISPLAY</span>
+                    <span class="col-10">{{product.display}}</span>
                 </div>
                 <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">DISPLAY:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.display}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">PORT:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.port}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">AUDIO:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.audio}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">KEYBOARD:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.keyboard}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">LAN:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.lan}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">WIFI:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.wifi}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">WEBCAM:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.webcam}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">BLUETOOTH:</span>
-                    <span
-                        class="col-xl-10 col-lg-9 col-md-10 col-xl-10 col-lg-9 col-md-10 col-9">{{product.bluetooth}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">SD:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.sd}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">CD:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.cd}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">OS:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.os}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">BATTERY:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.battery}}</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">WEIGHT:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9"><span>{{product.weight}}</span> kg</span>
-                </div>
-                <div class="row spec_line">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">COLOR:</span>
-                    <span class="col-xl-10 col-lg-9 col-md-10 col-9">{{product.color}}</span>
+                    <span class="col-2">KEYBOA</span>
+                    <span class="col-10">{{product.keyboard}}</span>
                 </div>
                 <div class="row py-2">
-                    <span class="col-xl-2 col-lg-3 col-md-2 col-3">DIMENSION:</span>
-                    <span class="col-md-10 col-xl-10 col-lg-9 col-md-10 col-9">{{product.dimension}}</span>
+                    <span class="col-2">OS</span>
+                    <span class="col-10">{{product.os}}</span>
+                </div>
+                <div class="row pb-3">
+                    <button class="btn btn-block btn-outline-success"  data-toggle="modal" data-target="#specs_product">Thêm</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-xl-4 col-lg-5">
+    <div class="col-xl-6 col-lg-5">
         <div class="card">
             <div class="card-header">
                 <p class="card-title">Giới thiệu sản phẩm</p>
@@ -129,7 +173,6 @@
         </div>
     </div>
 </div>
-{% csrf_token %}
 <script>
     function add_product(id) {
         $.ajax({
