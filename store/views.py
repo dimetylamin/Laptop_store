@@ -303,5 +303,5 @@ def order_by(request):
                 list.append({'id': item.id, 'name': item.name, 'image': f'/{item.image}',
                              'price': '{:,}'.format(item.price), 'newprice': '{:,}'.format(item.newprice),
                              'sale': round(100-(item.newprice/item.price*100), 1)})
-                             
+    
     return HttpResponse(json.dumps(list))
