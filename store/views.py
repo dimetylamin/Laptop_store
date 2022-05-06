@@ -82,7 +82,6 @@ def product(request, id_product):
     return render(request, 'product.html', context)
 
 
-@csrf_exempt
 def brand_filter(request, id_brand):
     list_product = []
     for item in products().filter(brand=id_brand).order_by('newprice'):
